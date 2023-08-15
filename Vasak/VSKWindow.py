@@ -1,6 +1,6 @@
 import os
 from PyQt6.QtCore import QUrl, Qt
-from PyQt6.QtWidgets import QMainWindow
+from PyQt6.QtWidgets import QMainWindow, QApplication
 from PyQt6.QtWebEngineWidgets import QWebEngineView
 
 
@@ -8,20 +8,12 @@ class VSKWindow(QMainWindow):
     def __init__(self, screen_num=0):
         super().__init__()
         self.webview = None
-        self.set_attributes()  # Establecer atributos de la ventana
-        self.move_to_screen(screen_num)  # Mover la ventana a una pantalla específica
-        self.set_widget()  # Establecer el widget central. Y el WebView.
-        self.set_webview_poprties()
-
-    # Mover la ventana a una pantalla específica
-    def move_to_screen(self, screen_num):
-        #desktop = QApplication.desktop()
-        #available_rect = desktop.availableGeometry(screen_num)
-        #self.move(available_rect.topLeft())
-        pass
+        self.__set_basic_attributes()  # Establecer atributos de la ventana
+        self.__set_webengine_widget()  # Establecer el widget central. Y el WebView.
+        self.__set_webview_properties()
 
     # Establecer atributos de la ventana
-    def set_attributes(self):
+    def __set_basic_attributes(self):
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)  # Fondo transparente
         self.setAttribute(Qt.WidgetAttribute.WA_NoSystemBackground, True)  # No dibujar el fondo del sistema
 
@@ -33,7 +25,7 @@ class VSKWindow(QMainWindow):
         page = self.webview.page()
         page.setBackgroundColor(Qt.ColorScheme.transparent)
 
-    def set_webview_poprties(self):
+    def __set_webview_properties(self):
         self.webview.setContextMenuPolicy(Qt.ContextMenuPolicy.NoContextMenu)
         settings = self.webview.settings()
         settings.setAttribute(settings.JavascriptEnabled, True)
@@ -41,7 +33,7 @@ class VSKWindow(QMainWindow):
         settings.setAttribute(settings.ShowScrollBars, False)
 
     # Establecer el widget central. Y el WebView.
-    def set_widget(self):
+    def __set_webengine_widget(self):
         self.webview = QWebEngineView(self)
         self.setCentralWidget(self.webview)
 
