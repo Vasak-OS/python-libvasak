@@ -7,9 +7,9 @@ from PyQt6.QtWebEngineWidgets import QWebEngineView
 class VSKWindow(QMainWindow):
     def __init__(self, screen_num=0):
         super().__init__()
-        self.webview = None
+        self.webview = QWebEngineView(self)
+        self.setCentralWidget(self.webview)
         self.__set_basic_attributes()  # Establecer atributos de la ventana
-        self.__set_webengine_widget()  # Establecer el widget central. Y el WebView.
         self.__set_webview_properties()
 
     # Establecer atributos de la ventana
@@ -23,22 +23,21 @@ class VSKWindow(QMainWindow):
         self.webview.webContent = file_path
         self.webview.load(QUrl.fromLocalFile(file_path))
         page = self.webview.page()
-        page.setBackgroundColor(Qt.ColorScheme.transparent)
+        page.setBackgroundColor(Qt.GlobalColor.transparent)
 
     def __set_webview_properties(self):
         self.webview.setContextMenuPolicy(Qt.ContextMenuPolicy.NoContextMenu)
         settings = self.webview.settings()
-        settings.setAttribute(settings.JavascriptEnabled, True)
-        settings.setAttribute(settings.AllowWindowActivationFromJavaScript, True)
-        settings.setAttribute(settings.ShowScrollBars, False)
+        settings.setAttribute(settings.WebAttribute.JavascriptEnabled, True)
+        settings.setAttribute(settings.WebAttribute.LocalContentCanAccessFileUrls, True)
+        settings.setAttribute(settings.WebAttribute.LocalContentCanAccessRemoteUrls, True)
+        settings.setAttribute(settings.WebAttribute.AllowWindowActivationFromJavaScript, True)
+        settings.setAttribute(settings.WebAttribute.ShowScrollBars, False)
 
-    # Establecer el widget central. Y el WebView.
-    def __set_webengine_widget(self):
-        self.webview = QWebEngineView(self)
-        self.setCentralWidget(self.webview)
 
     def set_as_dock(self):
         self.setAttribute(Qt.WidgetAttribute.WA_X11NetWmWindowTypeDock, True)  # Seteo tipo dock x11
+        self.setAttribute(Qt.WidgetAttribute.WA_AlwaysShowToolTips, True)
         self.setAttribute(Qt.WidgetAttribute.WA_AlwaysStackOnTop, True)  # Mantener la ventana por encima de las demás
         self.setWindowFlags(
             self.windowFlags() | Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint
