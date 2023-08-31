@@ -34,7 +34,6 @@ class VSKWindow(QMainWindow):
         settings.setAttribute(settings.WebAttribute.AllowWindowActivationFromJavaScript, True)
         settings.setAttribute(settings.WebAttribute.ShowScrollBars, False)
 
-
     def set_as_dock(self):
         self.setAttribute(Qt.WidgetAttribute.WA_X11NetWmWindowTypeDock, True)  # Seteo tipo dock x11
         self.setAttribute(Qt.WidgetAttribute.WA_AlwaysShowToolTips, True)
@@ -45,7 +44,7 @@ class VSKWindow(QMainWindow):
 
     def set_as_desktop(self):
         self.setAttribute(Qt.WidgetAttribute.WA_X11NetWmWindowTypeDesktop, True)  # Seteo tipo desktop x11
-        self.setAttribute(Qt.WidgetAttribute.WA_WA_AlwaysStackOnTop, False)
+        self.setAttribute(Qt.WidgetAttribute.WA_AlwaysStackOnTop, False)
         self.setWindowFlags(
             self.windowFlags() | Qt.WindowType.FramelessWindowHint | Qt.WindowType.Desktop
         )
