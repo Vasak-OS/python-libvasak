@@ -19,10 +19,6 @@ class VSKIconManager:
 
     @cache(maxsize=None)
     def get_icon(self, icon: str) -> str:
-        """
-        :param icon:
-        :return: icon name and path
-        """
         if icon is None:
             icon = self.not_found(icon)
 

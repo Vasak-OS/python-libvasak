@@ -1,12 +1,14 @@
 import os
 from PyQt6.QtCore import QUrl, Qt
-from PyQt6.QtWidgets import QMainWindow, QApplication
+from PyQt6.QtWidgets import QMainWindow
+from PyQt6.QtWebChannel import QWebChannel
 from PyQt6.QtWebEngineWidgets import QWebEngineView
 
 
 class VSKWindow(QMainWindow):
     def __init__(self, screen_num=0):
         super().__init__()
+        self.channel = QWebChannel()
         self.webview = QWebEngineView(self)
         self.setCentralWidget(self.webview)
         self.__set_basic_attributes()  # Establecer atributos de la ventana
@@ -24,6 +26,7 @@ class VSKWindow(QMainWindow):
         self.webview.load(QUrl.fromLocalFile(file_path))
         page = self.webview.page()
         page.setBackgroundColor(Qt.GlobalColor.transparent)
+        page.setWebChannel(self.channel)
 
     def __set_webview_properties(self):
         self.webview.setContextMenuPolicy(Qt.ContextMenuPolicy.NoContextMenu)
