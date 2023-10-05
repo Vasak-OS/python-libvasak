@@ -1,35 +1,58 @@
-import gi
-gi.require_version("NM", "1.0")
-from gi.repository import NM
+import os
+import re
+
+from Vasak.VSKIconManager import VSKIconManager
 
 class VSKNetworkManager:
     def __init__(self):
-        self.__client = NM.Client.new(None)
-        pass
+        self.iconManager = VSKIconManager()
+        self.defaultNetworkInterface = ''
+        self.defaultNetworkType = ''
+        self.defaultNetworkName = ''
+        self.defaultNetworkStatus = False
+        self.defaultNetworkIcon = ''
+    
+    def getDefaultNetworkInterface(self):
+        return self.defaultNetworkInterface
+    
+    def updateStatus(self):
+        data = os.popen("ip route 2> /dev/null | grep default").read().split(" ")
+        if (data[0] == 'none' and data[5]):
+            self.defaultNetworkInterface = data[5]
+        else: 
+            self.defaultNetworkInterface = data[4]
+        
+        data = re.sub(
+            r"\s+",
+            " ",
+            os.popen("nmcli device status 2> /dev/null | grep " + self.defaultNetworkInterface).read(),
+            0).split(" ")
+        data.pop()
 
-    def get_active_connections(self):
-        active_connections = self.__client.get_active_connections()
-        return active_connections
+        self.defaultNetworkType = data[1]
+        self.defaultNetworkName = " ".join(map(str,data[slice(3, data.__len__())]))
 
-    @staticmethod
-    def get_connection_type(connection):
-        connection_type = "UNKNOWN"
-        conn_type = connection.get_connection_type()
-        if 'ethernet' in conn_type:
-            connection_type = "ETHERNET"
-        elif 'wireless' in conn_type:
-            connection_type = "WIRELESS"
-        return connection_type
+        if (os.popen("cat /sys/class/net/" + self.defaultNetworkInterface + "/operstate").read() == "up\n"):
+            self.defaultNetworkStatus = True
+        
+        if(self.defaultNetworkType == 'ethernet'):
+            if(self.defaultNetworkStatus):
+                self.defaultNetworkIcon = self.iconManager.get_icon('network-wired-symbolic')
+            else:
+                self.defaultNetworkIcon = self.iconManager.get_icon('network-wired-disconnected-symbolic')
+        elif(self.defaultNetworkType == 'wifi'):
+            if(self.defaultNetworkStatus):
+                #TODO: Add Wifi Signal icons
+                self.defaultNetworkIcon = self.iconManager.get_icon('network-wireless-connected-symbolic')
+            else:
+                self.defaultNetworkIcon = self.iconManager.get_icon('network-wireless-disconnected-symbolic')
 
-if __name__ == "__main__":
-    nm = VSKNetworkManager()
-    print(nm.get_active_connections()[0].get_id())
-    print(nm.get_active_connections()[0].get_state())
-    print(nm.get_active_connections()[0].get_default())
-    print(nm.get_active_connections()[0].get_devices())
-    print(nm.get_active_connections()[0].get_connection())
-    print(nm.get_active_connections()[0].get_connection().get_id())
-    print(nm.get_active_connections()[0].get_connection().get_uuid())
-    print(nm.get_active_connections()[0].get_connection().get_connection_type())
-    connection = nm.get_active_connections()[0].get_connection()
-    print(nm.get_connection_type(connection))
+    def getDefaultConnectionData(self):
+        return {
+            "interface": self.defaultNetworkInterface,
+            "type": self.defaultNetworkType,
+            "name": self.defaultNetworkName,
+            "connected": self.defaultNetworkStatus,
+            "icon": self.defaultNetworkIcon
+        }
+        
