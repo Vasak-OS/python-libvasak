@@ -1,4 +1,5 @@
 import os
+from Vasak.application.VSKJavaScript import VSKJavaScript
 from PyQt6.QtCore import QUrl, Qt
 from PyQt6.QtWidgets import QMainWindow
 from PyQt6.QtWebChannel import QWebChannel
@@ -8,6 +9,7 @@ from PyQt6.QtWebEngineWidgets import QWebEngineView
 class VSKWindow(QMainWindow):
     def __init__(self, screen_num=0):
         super().__init__()
+        self.javaScript
         self.channel = QWebChannel()
         self.webview = QWebEngineView(self)
         self.setCentralWidget(self.webview)
@@ -27,6 +29,7 @@ class VSKWindow(QMainWindow):
         page = self.webview.page()
         page.setBackgroundColor(Qt.GlobalColor.transparent)
         page.setWebChannel(self.channel)
+        self.javaScript = VSKJavaScript(page)
 
     def __set_webview_properties(self):
         self.webview.setContextMenuPolicy(Qt.ContextMenuPolicy.NoContextMenu)
