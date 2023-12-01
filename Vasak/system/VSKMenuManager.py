@@ -1,13 +1,13 @@
 import gi
 gi.require_version('GMenu', '3.0')
 
-from Vasak import VSKIconManager
+from Vasak.system.VSKIconManager import VSKIconManager
 from gi.repository import GMenu, Gio
 from functools import lru_cache
 
 class VSKMenuManager:
     def __init__(self):
-        self.icon_manager = VSKIconManager.VSKIconManager()
+        self.icon_manager = VSKIconManager()
         self.menu_path = "/etc/xdg/menus/hydriam-applications.menu"
 
     def fix_description(self, description):
