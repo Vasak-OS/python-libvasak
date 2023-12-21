@@ -38,18 +38,3 @@ class VSKWindow(QMainWindow):
         settings.setAttribute(settings.WebAttribute.LocalContentCanAccessRemoteUrls, True)
         settings.setAttribute(settings.WebAttribute.AllowWindowActivationFromJavaScript, True)
         settings.setAttribute(settings.WebAttribute.ShowScrollBars, False)
-
-    def set_as_dock(self):
-        self.setAttribute(Qt.WidgetAttribute.WA_X11NetWmWindowTypeDock, True)  # Seteo tipo dock x11
-        self.setAttribute(Qt.WidgetAttribute.WA_AlwaysShowToolTips, True)
-        self.setAttribute(Qt.WidgetAttribute.WA_AlwaysStackOnTop, True)  # Mantener la ventana por encima de las demás
-        self.setWindowFlags(
-            self.windowFlags() | Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint
-        )  # Establecer atributos de la ventana (sin bordes, sin barra de título, etc.)
-
-    def set_as_desktop(self):
-        self.setAttribute(Qt.WidgetAttribute.WA_X11NetWmWindowTypeDesktop, True)  # Seteo tipo desktop x11
-        self.setAttribute(Qt.WidgetAttribute.WA_AlwaysStackOnTop, False)
-        self.setWindowFlags(
-            self.windowFlags() | Qt.WindowType.FramelessWindowHint | Qt.WindowType.Desktop
-        )
