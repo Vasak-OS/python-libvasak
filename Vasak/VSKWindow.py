@@ -18,7 +18,6 @@ class VSKWindow(QMainWindow):
     # Establecer atributos de la ventana
     def __set_basic_attributes(self):
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)  # Fondo transparente
-        self.setAttribute(Qt.WidgetAttribute.WA_NoSystemBackground, True)  # No dibujar el fondo del sistema
 
     # Cargar un HTML en el WebView
     def load_html(self, html):
