@@ -7,7 +7,7 @@ from PyQt6.QtWebEngineWidgets import QWebEngineView
 
 
 class VSKWindow(QMainWindow):
-    def __init__(self, screen_num=0):
+    def __init__(self):
         super().__init__()
         self.channel = QWebChannel()
         self.webview = QWebEngineView(self)
