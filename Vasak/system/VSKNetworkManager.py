@@ -55,4 +55,7 @@ class VSKNetworkManager:
             "connected": self.defaultNetworkStatus,
             "icon": self.defaultNetworkIcon
         }
+    
+    def getAllWifiNetworks(self):
+        return os.popen("nmcli device wifi list").read().split("\n")
         
