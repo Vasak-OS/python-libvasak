@@ -58,4 +58,8 @@ class VSKNetworkManager:
     
     def getAllWifiNetworks(self):
         return os.popen("nmcli device wifi list").read().split("\n")
-        
+    
+    def connectToWifi(self, ssid, password):
+        status = os.popen("nmcli device wifi connect " + ssid + " password " + password).read()
+        self.updateStatus()
+        return status
