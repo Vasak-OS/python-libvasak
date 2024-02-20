@@ -11,16 +11,13 @@ class VSKNetworkManager:
         self.defaultNetworkName = ''
         self.defaultNetworkStatus = False
         self.defaultNetworkIcon = ''
+        self.ip = ''
     
     def getDefaultNetworkInterface(self):
         return self.defaultNetworkInterface
     
     def updateStatus(self):
-        data = os.popen("ip route 2> /dev/null | grep default").read().split(" ")
-        if (data[0] == 'none' and data[5]):
-            self.defaultNetworkInterface = data[5]
-        else: 
-            self.defaultNetworkInterface = data[4]
+        self.setDefaultNetworkInterface()
         
         data = re.sub(
             r"\s+",
@@ -31,10 +28,25 @@ class VSKNetworkManager:
 
         self.defaultNetworkType = data[1]
         self.defaultNetworkName = " ".join(map(str,data[slice(3, data.__len__())]))
+        self.updateNetworkStatus()
+        self.updateNetworkIcon()
 
+    def setDefaultNetworkInterface(self):
+        data = os.popen("ip route 2> /dev/null | grep default").read().split(" ")
+        if (data[0] == 'none' and data[5]):
+            self.defaultNetworkInterface = data[5]
+        else: 
+            self.defaultNetworkInterface = data[4]
+
+        self.ip = data[8]
+        
+    def updateNetworkStatus(self):
         if (os.popen("cat /sys/class/net/" + self.defaultNetworkInterface + "/operstate").read() == "up\n"):
             self.defaultNetworkStatus = True
-        
+        else:
+            self.defaultNetworkStatus = False
+
+    def updateNetworkIcon(self):
         if(self.defaultNetworkType == 'ethernet'):
             if(self.defaultNetworkStatus):
                 self.defaultNetworkIcon = self.iconManager.get_icon('network-wired-symbolic')
@@ -53,7 +65,8 @@ class VSKNetworkManager:
             "type": self.defaultNetworkType,
             "name": self.defaultNetworkName,
             "connected": self.defaultNetworkStatus,
-            "icon": self.defaultNetworkIcon
+            "icon": self.defaultNetworkIcon,
+            "ip": self.ip
         }
     
     def getAllWifiNetworks(self):
