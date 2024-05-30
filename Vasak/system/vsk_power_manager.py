@@ -1,8 +1,8 @@
 import os
 import time
-from Vasak.application.VSKNotifyManager import VSKNotifyManager
-from Vasak.application.VSKPackageManager import VSKPackageManager
-from Vasak.application.VSKShellConnector import VSKShellConnector
+from Vasak.application.vsk_notify_manager import VSKNotifyManager
+from Vasak.application.vsk_package_manager import VSKPackageManager
+from Vasak.application.vsk_shell_connector import VSKShellConnector
 
 class VSKPowerManager():
   def __init__(self):

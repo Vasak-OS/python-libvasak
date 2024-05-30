@@ -1,7 +1,7 @@
 import os
 import re
 
-from Vasak.system.VSKIconManager import VSKIconManager
+from Vasak.system.vsk_icon_manager import VSKIconManager
 
 class VSKNetworkManager:
     def __init__(self):

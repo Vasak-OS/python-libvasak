@@ -1,5 +1,5 @@
 import os
-from Vasak.application.VSKJavaScript import VSKJavaScript
+from Vasak.application.vsk_javascript import VSKJavaScript
 from PyQt6.QtCore import QUrl, Qt
 from PyQt6.QtWidgets import QMainWindow
 from PyQt6.QtWebChannel import QWebChannel

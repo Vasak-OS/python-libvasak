@@ -1,7 +1,7 @@
 import gi
 gi.require_version('GMenu', '3.0')
 
-from Vasak.system.VSKIconManager import VSKIconManager
+from Vasak.system.vsk_icon_manager import VSKIconManager
 from gi.repository import GMenu, Gio
 from functools import lru_cache
 
